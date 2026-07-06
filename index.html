@@ -11,7 +11,6 @@
 
 <style>
 
-
 *{
 box-sizing:border-box;
 }
@@ -21,14 +20,13 @@ body{
 
 margin:0;
 font-family:Arial, Helvetica, sans-serif;
-background:#ffffff;
+background:white;
 color:#111;
 
 }
 
 
 /* LOGIN */
-
 
 #login{
 
@@ -47,6 +45,7 @@ align-items:center;
 
 font-size:44px;
 font-weight:600;
+
 margin-bottom:35px;
 
 }
@@ -69,6 +68,7 @@ border-radius:8px;
 font-size:15px;
 
 }
+
 
 
 textarea{
@@ -112,6 +112,7 @@ opacity:.8;
 
 
 
+
 .hidden{
 
 display:none;
@@ -121,7 +122,7 @@ display:none;
 
 
 
-/* APP */
+/* HEADER */
 
 
 header{
@@ -172,6 +173,8 @@ margin:0;
 
 
 
+
+
 /* HOST */
 
 
@@ -198,7 +201,6 @@ border-radius:12px;
 margin-top:0;
 
 }
-
 
 
 
@@ -235,6 +237,7 @@ cursor:pointer;
 background:#fafafa;
 
 }
+
 
 
 
@@ -277,7 +280,6 @@ font-size:13px;
 color:#999;
 
 }
-
 
 
 
@@ -356,6 +358,8 @@ width:100px;
 
 
 
+
+
 /* LIKE */
 
 
@@ -368,6 +372,15 @@ color:#111;
 border:1px solid #ddd;
 
 }
+
+
+
+.likeBtn:hover{
+
+background:#f5f5f5;
+
+}
+
 
 
 
@@ -415,7 +428,6 @@ color:#444;
 
 
 
-
 </style>
 
 
@@ -427,15 +439,22 @@ color:#444;
 
 
 
+
 <div id="login">
 
 
-<h1>WeTube</h1>
+<h1>
+
+WeTube
+
+</h1>
+
 
 
 <input 
 id="name"
 placeholder="Nome">
+
 
 
 <input
@@ -444,11 +463,13 @@ type="password"
 placeholder="Password">
 
 
+
 <button onclick="login()">
 
 Entra
 
 </button>
+
 
 
 </div>
@@ -464,6 +485,7 @@ Entra
 <header>
 
 
+
 <div class="logo">
 
 WeTube
@@ -472,8 +494,9 @@ WeTube
 
 
 
-<div id="status"></div>
+<div id="status">
 
+</div>
 
 
 
@@ -485,6 +508,7 @@ oninput="renderVideos()">
 
 
 </header>
+
 
 
 
@@ -534,7 +558,9 @@ Pubblica video
 </button>
 
 
+
 </div>
+
 
 
 
@@ -547,14 +573,16 @@ Pubblica video
 
 
 
+
 </div>
 
 
 
 
 
-<div id="player">
 
+
+<div id="player">
 
 
 <button class="closeBtn" onclick="closePlayer()">
@@ -565,13 +593,16 @@ Chiudi
 
 
 
+
 <iframe id="frame"></iframe>
+
 
 
 
 <div id="playerContent">
 
 </div>
+
 
 
 
@@ -587,6 +618,7 @@ let role = "";
 let videos = JSON.parse(localStorage.getItem("wetubeVideos")) || [];
 
 let currentVideo = null;
+
 
 
 
@@ -606,10 +638,8 @@ JSON.stringify(videos)
 function login(){
 
 
-
 let name =
 document.getElementById("name").value;
-
 
 
 let password =
@@ -619,7 +649,9 @@ document.getElementById("password").value;
 
 if(name==="" || password===""){
 
+
 alert("Inserisci nome e password");
+
 
 return;
 
@@ -640,25 +672,21 @@ role="host";
 document.getElementById("hostPanel").style.display="block";
 
 
-document.getElementById("status").innerHTML=
-
-"Modalità Host";
+document.getElementById("status").innerHTML="Modalità Host";
 
 
 }
-
 else{
 
 
 role="user";
 
 
-document.getElementById("status").innerHTML=
-
-"Modalità Utente";
+document.getElementById("status").innerHTML="Modalità Utente";
 
 
 }
+
 
 
 
@@ -680,6 +708,9 @@ renderVideos();
 
 
 
+
+
+
 function addVideo(){
 
 
@@ -689,6 +720,7 @@ if(role!=="host"){
 return;
 
 }
+
 
 
 
@@ -721,14 +753,15 @@ alert("Inserisci titolo e video");
 
 return;
 
-
 }
 
 
 
 
 
+
 let video={
+
 
 
 id:Date.now(),
@@ -746,13 +779,14 @@ description:description,
 url:url,
 
 
-likes:0,
+likedBy:[],
 
 
 comments:[],
 
 
 date:new Date().toLocaleDateString("it-IT")
+
 
 
 };
@@ -788,6 +822,10 @@ renderVideos();
 
 
 
+
+
+
+
 function renderVideos(){
 
 
@@ -802,7 +840,6 @@ document.getElementById("search").value.toLowerCase();
 
 
 
-
 home.innerHTML="";
 
 
@@ -812,7 +849,7 @@ let filtered =
 videos.filter(video=>{
 
 
-return (
+return(
 
 video.title.toLowerCase().includes(search)
 
@@ -836,9 +873,7 @@ video.description.toLowerCase().includes(search)
 if(filtered.length===0){
 
 
-home.innerHTML=
-
-`
+home.innerHTML=`
 
 <p style="text-align:center;color:#777">
 
@@ -869,9 +904,7 @@ card.className="videoCard";
 
 
 
-card.innerHTML=
-
-`
+card.innerHTML=`
 
 <div class="videoTitle">
 
@@ -905,6 +938,7 @@ ${video.date}
 
 
 
+
 card.onclick=function(){
 
 openVideo(video);
@@ -916,33 +950,30 @@ openVideo(video);
 
 
 
+
 if(role==="host"){
 
 
 
-let button =
+let deleteButton =
 document.createElement("button");
 
 
 
-button.className="deleteBtn";
+deleteButton.className="deleteBtn";
+
+
+deleteButton.innerHTML="Elimina";
 
 
 
-button.innerHTML="Elimina";
-
-
-
-button.onclick=function(event){
-
+deleteButton.onclick=function(event){
 
 
 event.stopPropagation();
 
 
-
 deleteVideo(video.id);
-
 
 
 };
@@ -950,11 +981,12 @@ deleteVideo(video.id);
 
 
 
-card.appendChild(button);
+card.appendChild(deleteButton);
 
 
 
 }
+
 
 
 
@@ -974,6 +1006,10 @@ home.appendChild(card);
 
 
 
+
+
+
+
 function deleteVideo(id){
 
 
@@ -987,16 +1023,17 @@ return;
 
 
 
-let confirmDelete =
+let answer =
 confirm("Eliminare questo video?");
 
 
 
-if(!confirmDelete){
+if(!answer){
 
 return;
 
 }
+
 
 
 
@@ -1014,6 +1051,8 @@ renderVideos();
 
 
 }
+
+
 
 
 
@@ -1048,6 +1087,10 @@ renderPlayer();
 
 
 
+
+
+
+
 function renderPlayer(){
 
 
@@ -1057,11 +1100,20 @@ document.getElementById("playerContent");
 
 
 
-box.innerHTML=
+let liked =
+currentVideo.likedBy.includes(user);
 
-`
 
-<h2>${currentVideo.title}</h2>
+
+
+box.innerHTML=`
+
+<h2>
+
+${currentVideo.title}
+
+</h2>
+
 
 
 <p>
@@ -1073,6 +1125,7 @@ Creato da:
 </p>
 
 
+
 <p>
 
 ${currentVideo.description}
@@ -1081,15 +1134,29 @@ ${currentVideo.description}
 
 
 
+
+
 <button class="likeBtn" onclick="likeVideo()">
 
-♥ ${currentVideo.likes} Mi piace
+${liked ? "♥ Ti piace" : "♡ Mi piace"}
 
 </button>
 
 
 
+<p>
+
+${currentVideo.likedBy.length} Mi piace
+
+</p>
+
+
+
+
+
+
 <div class="commentBox">
+
 
 
 <h3>
@@ -1100,9 +1167,9 @@ Commenti
 
 
 
-<input 
+<input
 id="commentInput"
-placeholder="Scrivi commento">
+placeholder="Scrivi un commento">
 
 
 
@@ -1114,6 +1181,7 @@ Invia
 
 
 
+
 <div id="comments">
 
 </div>
@@ -1121,6 +1189,7 @@ Invia
 
 
 </div>
+
 
 
 `;
@@ -1137,11 +1206,39 @@ renderComments();
 
 
 
+
+
+
+
 function likeVideo(){
 
 
 
-currentVideo.likes++;
+let index =
+currentVideo.likedBy.indexOf(user);
+
+
+
+
+if(index===-1){
+
+
+
+currentVideo.likedBy.push(user);
+
+
+
+}
+else{
+
+
+
+currentVideo.likedBy.splice(index,1);
+
+
+
+}
+
 
 
 
@@ -1154,6 +1251,8 @@ renderPlayer();
 
 
 }
+
+
 
 
 
@@ -1172,13 +1271,16 @@ document.getElementById("commentInput").value;
 
 if(text===""){
 
+
 return;
 
 }
 
 
 
+
 currentVideo.comments.push({
+
 
 
 user:user,
@@ -1187,7 +1289,9 @@ user:user,
 text:text
 
 
+
 });
+
 
 
 
@@ -1200,6 +1304,8 @@ renderPlayer();
 
 
 }
+
+
 
 
 
@@ -1224,12 +1330,15 @@ return;
 
 
 
+
+
 area.innerHTML="";
 
 
 
 
 currentVideo.comments.forEach(comment=>{
+
 
 
 let div =
@@ -1241,9 +1350,7 @@ div.className="comment";
 
 
 
-div.innerHTML=
-
-`
+div.innerHTML=`
 
 <div class="commentUser">
 
@@ -1276,6 +1383,10 @@ area.appendChild(div);
 
 
 
+
+
+
+
 function closePlayer(){
 
 
@@ -1297,6 +1408,7 @@ currentVideo=null;
 
 
 </script>
+
 
 
 </body>
