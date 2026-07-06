@@ -1,197 +1,519 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
+
 <meta charset="UTF-8">
 <title>WeTube</title>
 
 <style>
+
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #ffffff;
-  color: #111;
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:white;
+    color:#111;
 }
 
-/* LOGIN */
+
 #login {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+
+    position:fixed;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
 }
+
 
 input {
-  padding: 10px;
-  margin: 6px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  width: 240px;
+
+    width:250px;
+    padding:10px;
+    margin:6px;
+
+    border:1px solid #ddd;
+    border-radius:6px;
+
 }
+
 
 button {
-  padding: 10px 14px;
-  margin-top: 6px;
-  border: 1px solid #ddd;
-  background: #111;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
+
+    padding:10px 16px;
+
+    background:#111;
+    color:white;
+
+    border:none;
+    border-radius:6px;
+
+    cursor:pointer;
+
 }
 
-/* HEADER */
+
 header {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 20px;
-  border-bottom: 1px solid #eee;
+
+    height:55px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:0 25px;
+
+    border-bottom:1px solid #eee;
+
 }
 
-#search {
-  width: 200px;
-}
 
-/* HOME */
+
 #home {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
+
+    max-width:800px;
+
+    margin:auto;
+
+    padding:20px;
+
 }
 
-.videoCard {
-  padding: 14px;
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
+
+
+.video {
+
+    padding:15px;
+
+    border-bottom:1px solid #eee;
+
+    cursor:pointer;
+
 }
 
-.videoCard:hover {
-  background: #f7f7f7;
+
+.video:hover {
+
+    background:#f7f7f7;
+
 }
+
+
 
 /* PLAYER */
+
 #player {
-  position: fixed;
-  inset: 0;
-  background: #fff;
-  display: none;
-  flex-direction: column;
+
+    position:fixed;
+
+    inset:0;
+
+    background:white;
+
+    display:none;
+
+    flex-direction:column;
+
 }
 
-#player iframe {
-  width: 100%;
-  height: 60%;
-  border: none;
+
+
+iframe {
+
+    width:100%;
+
+    height:60%;
+
+    border:none;
+
 }
+
+
 
 #info {
-  padding: 16px;
-  max-width: 800px;
-  margin: auto;
+
+    padding:20px;
+
 }
 
-.hidden { display: none; }
+
+
+
+#hostPanel {
+
+    max-width:500px;
+
+    margin:30px auto;
+
+    border:1px solid #eee;
+
+    padding:20px;
+
+    display:none;
+
+}
+
+
+
+.hidden {
+
+display:none;
+
+}
+
+
 </style>
+
+
 </head>
+
 
 <body>
 
+
 <!-- LOGIN -->
+
 <div id="login">
-  <h2>WeTube</h2>
-  <input id="name" placeholder="Nome">
-  <input id="pass" type="password" placeholder="Password">
-  <button onclick="enter()">Entra</button>
+
+
+<h2>WeTube</h2>
+
+
+<input id="name" placeholder="Nome">
+
+
+<input id="password" type="password" placeholder="Password">
+
+
+<button onclick="login()">Entra</button>
+
+
 </div>
 
+
+
 <!-- APP -->
+
+
 <div id="app" class="hidden">
 
+
 <header>
-  <div>WeTube</div>
-  <input id="search" placeholder="Cerca..." oninput="render()">
+
+<div>
+WeTube
+</div>
+
+
+<input id="search"
+placeholder="Cerca..."
+oninput="render()">
+
+
 </header>
+
+
+
+<div id="hostPanel">
+
+
+<h3>Dashboard Host</h3>
+
+
+<input id="title"
+placeholder="Titolo episodio">
+
+
+<input id="author"
+placeholder="Autore">
+
+
+<input id="videoURL"
+placeholder="Link video">
+
+
+<button onclick="publishVideo()">
+
+Pubblica
+
+</button>
+
+
+</div>
+
+
 
 <div id="home"></div>
 
+
+
 </div>
+
+
+
 
 <!-- PLAYER -->
-<div id="player">
-  <button onclick="closePlayer()">Chiudi</button>
-  <iframe id="frame"></iframe>
 
-  <div id="info"></div>
+
+<div id="player">
+
+
+<button onclick="closePlayer()">
+
+Chiudi
+
+</button>
+
+
+<iframe id="frame"></iframe>
+
+
+<div id="info"></div>
+
+
+
 </div>
 
+
+
+
 <script>
-let user = "";
-let role = "";
 
-let videos = [
-  {
-    title: "Benvenuto in WeTube",
-    author: "Host",
-    url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-  }
-];
 
-function enter() {
-  const name = document.getElementById("name").value;
-  const pass = document.getElementById("pass").value;
+let user="";
 
-  if (!name || !pass) return alert("Inserisci tutto");
+let role="";
 
-  user = name;
 
-  // 👑 HOST (password temporanea)
-  if (pass === "admin123") {
-    role = "host";
-  } else {
-    role = "user";
-  }
+let videos=[];
 
-  document.getElementById("login").style.display = "none";
-  document.getElementById("app").classList.remove("hidden");
 
-  render();
+
+function login(){
+
+
+let name=document.getElementById("name").value;
+
+let password=document.getElementById("password").value;
+
+
+
+if(!name || !password){
+
+alert("Inserisci tutti i dati");
+
+return;
+
 }
 
-function render() {
-  const home = document.getElementById("home");
-  const search = document.getElementById("search").value.toLowerCase();
 
-  home.innerHTML = "";
 
-  videos
-    .filter(v => v.title.toLowerCase().includes(search))
-    .forEach(v => {
-      const div = document.createElement("div");
-      div.className = "videoCard";
-      div.innerHTML = `<b>${v.title}</b><br>${v.author}`;
-      div.onclick = () => openVideo(v);
-      home.appendChild(div);
-    });
+user=name;
+
+
+
+if(password==="admin123"){
+
+role="host";
+
+document.getElementById("hostPanel").style.display="block";
+
 }
 
-function openVideo(v) {
-  document.getElementById("player").style.display = "flex";
-  document.getElementById("frame").src = v.url;
+else{
 
-  document.getElementById("info").innerHTML = `
-    <h3>${v.title}</h3>
-    <p>${v.author}</p>
-    <p>Utente: ${user}</p>
-    <p>Ruolo: ${role}</p>
-  `;
+role="user";
+
 }
 
-function closePlayer() {
-  document.getElementById("player").style.display = "none";
-  document.getElementById("frame").src = "";
+
+
+document.getElementById("login").style.display="none";
+
+document.getElementById("app").classList.remove("hidden");
+
+
+render();
+
+
 }
+
+
+
+
+function publishVideo(){
+
+
+
+let title=document.getElementById("title").value;
+
+let author=document.getElementById("author").value;
+
+let url=document.getElementById("videoURL").value;
+
+
+
+if(!title || !url){
+
+alert("Inserisci titolo e link");
+
+return;
+
+}
+
+
+
+videos.push({
+
+title:title,
+
+author:author || user,
+
+url:url
+
+});
+
+
+
+document.getElementById("title").value="";
+
+document.getElementById("author").value="";
+
+document.getElementById("videoURL").value="";
+
+
+render();
+
+
+}
+
+
+
+
+function render(){
+
+
+let home=document.getElementById("home");
+
+let search=document.getElementById("search").value.toLowerCase();
+
+
+
+home.innerHTML="";
+
+
+
+let filtered=videos.filter(v=>
+
+
+v.title.toLowerCase().includes(search)
+
+);
+
+
+
+if(filtered.length===0){
+
+
+home.innerHTML="<p>Nessun video disponibile.</p>";
+
+return;
+
+
+}
+
+
+
+
+filtered.forEach(v=>{
+
+
+let div=document.createElement("div");
+
+
+div.className="video";
+
+
+div.innerHTML=
+
+`
+
+<b>${v.title}</b>
+
+<br>
+
+${v.author}
+
+`;
+
+
+
+div.onclick=()=>openVideo(v);
+
+
+
+home.appendChild(div);
+
+
+
+});
+
+
+
+}
+
+
+
+
+function openVideo(v){
+
+
+
+document.getElementById("player").style.display="flex";
+
+
+document.getElementById("frame").src=v.url;
+
+
+
+document.getElementById("info").innerHTML=
+
+`
+
+<h3>${v.title}</h3>
+
+<p>${v.author}</p>
+
+<p>Visualizzato da ${user}</p>
+
+`;
+
+
+
+}
+
+
+
+
+function closePlayer(){
+
+
+document.getElementById("player").style.display="none";
+
+
+document.getElementById("frame").src="";
+
+
+}
+
+
 
 </script>
 
+
+
 </body>
+
 </html>
