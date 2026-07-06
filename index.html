@@ -546,7 +546,7 @@ Chiudi
 
 </div>
 
-    <script>
+<script>
 
 let user = "";
 let role = "";
@@ -565,7 +565,6 @@ JSON.stringify(videos)
 );
 
 }
-
 
 
 
@@ -837,6 +836,42 @@ openVideo(video);
 
 
 
+/* ELIMINAZIONE SOLO HOST */
+
+if(role==="host"){
+
+
+let deleteButton =
+document.createElement("button");
+
+
+deleteButton.innerText="Elimina";
+
+
+deleteButton.className="secondary";
+
+
+
+deleteButton.onclick=function(event){
+
+
+event.stopPropagation();
+
+
+deleteVideo(video.id);
+
+
+};
+
+
+
+card.appendChild(deleteButton);
+
+
+}
+
+
+
 home.appendChild(card);
 
 
@@ -846,6 +881,51 @@ home.appendChild(card);
 
 
 }
+
+
+
+
+
+function deleteVideo(id){
+
+
+
+if(role!=="host"){
+
+return;
+
+}
+
+
+
+let confirmDelete =
+confirm("Vuoi eliminare questo episodio?");
+
+
+
+if(!confirmDelete){
+
+return;
+
+}
+
+
+
+videos =
+videos.filter(video=>video.id!==id);
+
+
+
+saveVideos();
+
+
+
+renderVideos();
+
+
+
+}
+
 
 
 
@@ -1105,11 +1185,11 @@ currentVideo=null;
 
 
 
-
-
 </script>
 
 
 </body>
+
+</html>    
 
 </html>
