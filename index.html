@@ -4,99 +4,227 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>WeTube</title>
-<title>WeTube V1.1 TEST</title>
+
 <style>
 
-body {
-    margin:0;
-    font-family: Arial, sans-serif;
-    background:white;
-    color:#111;
+*{
+box-sizing:border-box;
 }
 
+body{
 
-#login {
-
-    position:fixed;
-    inset:0;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:#fff;
+color:#111;
 
 }
 
 
-input {
+/* LOGIN */
 
-    width:250px;
-    padding:10px;
-    margin:6px;
+#login{
 
-    border:1px solid #ddd;
-    border-radius:6px;
+position:fixed;
+inset:0;
 
-}
-
-
-button {
-
-    padding:10px 16px;
-
-    background:#111;
-    color:white;
-
-    border:none;
-    border-radius:6px;
-
-    cursor:pointer;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 
 }
 
 
-header {
+#login h1{
 
-    height:55px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    padding:0 25px;
-
-    border-bottom:1px solid #eee;
+font-size:40px;
+font-weight:500;
 
 }
 
 
+input, textarea{
 
-#home {
+width:280px;
 
-    max-width:800px;
+padding:12px;
 
-    margin:auto;
+margin:6px;
 
-    padding:20px;
+border:1px solid #ddd;
 
-}
+border-radius:8px;
 
-
-
-.video {
-
-    padding:15px;
-
-    border-bottom:1px solid #eee;
-
-    cursor:pointer;
+font-size:15px;
 
 }
 
 
-.video:hover {
+textarea{
 
-    background:#f7f7f7;
+height:90px;
+
+resize:none;
+
+}
+
+
+button{
+
+padding:12px 18px;
+
+border:none;
+
+border-radius:8px;
+
+background:#111;
+
+color:white;
+
+cursor:pointer;
+
+font-size:15px;
+
+transition:.2s;
+
+}
+
+
+button:hover{
+
+opacity:.8;
+
+}
+
+
+/* APP */
+
+.hidden{
+
+display:none;
+
+}
+
+
+header{
+
+height:65px;
+
+border-bottom:1px solid #eee;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:0 30px;
+
+}
+
+
+.logo{
+
+font-size:24px;
+
+font-weight:600;
+
+}
+
+
+#search{
+
+width:260px;
+
+margin:0;
+
+}
+
+
+/* HOME */
+
+#home{
+
+max-width:900px;
+
+margin:auto;
+
+padding:30px;
+
+}
+
+
+.videoCard{
+
+border-bottom:1px solid #eee;
+
+padding:20px 5px;
+
+cursor:pointer;
+
+transition:.2s;
+
+}
+
+
+.videoCard:hover{
+
+background:#fafafa;
+
+}
+
+
+.videoTitle{
+
+font-size:20px;
+
+margin-bottom:8px;
+
+}
+
+
+.videoAuthor{
+
+color:#666;
+
+}
+
+
+.videoDescription{
+
+margin-top:8px;
+
+color:#444;
+
+}
+
+
+/* HOST */
+
+#hostPanel{
+
+max-width:500px;
+
+margin:30px auto;
+
+padding:25px;
+
+border:1px solid #eee;
+
+border-radius:12px;
+
+display:none;
+
+}
+
+
+#hostPanel h2{
+
+margin-top:0;
 
 }
 
@@ -104,68 +232,68 @@ header {
 
 /* PLAYER */
 
-#player {
+#player{
 
-    position:fixed;
+position:fixed;
 
-    inset:0;
+inset:0;
 
-    background:white;
-
-    display:none;
-
-    flex-direction:column;
-
-}
-
-
-
-iframe {
-
-    width:100%;
-
-    height:60%;
-
-    border:none;
-
-}
-
-
-
-#info {
-
-    padding:20px;
-
-}
-
-
-
-
-#hostPanel {
-
-    max-width:500px;
-
-    margin:30px auto;
-
-    border:1px solid #eee;
-
-    padding:20px;
-
-    display:none;
-
-}
-
-
-
-.hidden {
+background:white;
 
 display:none;
+
+flex-direction:column;
+
+z-index:10;
+
+}
+
+
+#player iframe{
+
+width:100%;
+
+height:65%;
+
+border:none;
+
+}
+
+
+#playerInfo{
+
+padding:25px;
+
+max-width:900px;
+
+}
+
+
+.close{
+
+margin:15px;
+
+width:100px;
+
+}
+
+
+/* DELETE */
+
+.deleteBtn{
+
+background:#fff;
+
+color:#111;
+
+border:1px solid #ddd;
+
+margin-top:10px;
 
 }
 
 
 </style>
-
 
 </head>
 
@@ -173,12 +301,11 @@ display:none;
 <body>
 
 
-<!-- LOGIN -->
 
 <div id="login">
 
 
-<h2>WeTube</h2>
+<h1>WeTube</h1>
 
 
 <input id="name" placeholder="Nome">
@@ -187,14 +314,15 @@ display:none;
 <input id="password" type="password" placeholder="Password">
 
 
-<button onclick="login()">Entra</button>
+<button onclick="login()">
+
+Entra
+
+</button>
 
 
 </div>
 
-
-
-<!-- APP -->
 
 
 <div id="app" class="hidden">
@@ -202,24 +330,27 @@ display:none;
 
 <header>
 
-<div>
+<div class="logo">
+
 WeTube
+
 </div>
 
 
 <input id="search"
-placeholder="Cerca..."
-oninput="render()">
+placeholder="Cerca video..."
+oninput="renderVideos()">
 
 
 </header>
 
 
 
+
 <div id="hostPanel">
 
 
-<h3>Dashboard Host</h3>
+<h2>Dashboard Host</h2>
 
 
 <input id="title"
@@ -230,13 +361,17 @@ placeholder="Titolo episodio">
 placeholder="Autore">
 
 
-<input id="videoURL"
+<textarea id="description"
+placeholder="Descrizione"></textarea>
+
+
+<input id="url"
 placeholder="Link video">
 
 
-<button onclick="publishVideo()">
+<button onclick="addVideo()">
 
-Pubblica
+Pubblica episodio
 
 </button>
 
@@ -245,7 +380,10 @@ Pubblica
 
 
 
-<div id="home"></div>
+
+<div id="home">
+
+</div>
 
 
 
@@ -254,13 +392,11 @@ Pubblica
 
 
 
-<!-- PLAYER -->
-
 
 <div id="player">
 
 
-<button onclick="closePlayer()">
+<button class="close" onclick="closePlayer()">
 
 Chiudi
 
@@ -270,61 +406,48 @@ Chiudi
 <iframe id="frame"></iframe>
 
 
-<div id="info"></div>
-
+<div id="playerInfo"></div>
 
 
 </div>
 
+    <script>
 
+let user = "";
+let role = "";
 
-
-<script>
-
-
-let user="";
-
-let role="";
-
-
-let videos=[];
+let videos = JSON.parse(localStorage.getItem("wetubeVideos")) || [];
 
 
 
 function login(){
 
-
-let name=document.getElementById("name").value;
-
-let password=document.getElementById("password").value;
-
+let name = document.getElementById("name").value;
+let password = document.getElementById("password").value;
 
 
 if(!name || !password){
 
-alert("Inserisci tutti i dati");
-
+alert("Inserisci nome e password");
 return;
 
 }
 
 
-
-user=name;
-
+user = name;
 
 
-if(password==="admin123"){
+if(password === "admin123"){
 
-role="host";
+role = "host";
 
-document.getElementById("hostPanel").style.display="block";
+document.getElementById("hostPanel").style.display = "block";
 
 }
 
 else{
 
-role="user";
+role = "user";
 
 }
 
@@ -335,7 +458,7 @@ document.getElementById("login").style.display="none";
 document.getElementById("app").classList.remove("hidden");
 
 
-render();
+renderVideos();
 
 
 }
@@ -343,21 +466,37 @@ render();
 
 
 
-function publishVideo(){
+
+function addVideo(){
 
 
+if(role !== "host"){
 
-let title=document.getElementById("title").value;
+return;
 
-let author=document.getElementById("author").value;
+}
 
-let url=document.getElementById("videoURL").value;
+
+let title =
+document.getElementById("title").value;
+
+
+let author =
+document.getElementById("author").value;
+
+
+let description =
+document.getElementById("description").value;
+
+
+let url =
+document.getElementById("url").value;
 
 
 
 if(!title || !url){
 
-alert("Inserisci titolo e link");
+alert("Inserisci almeno titolo e link");
 
 return;
 
@@ -365,26 +504,50 @@ return;
 
 
 
-videos.push({
+
+let video = {
+
+
+id: Date.now(),
+
 
 title:title,
 
+
 author:author || user,
 
-url:url
 
-});
+description:description,
 
+
+url:url,
+
+
+date:new Date().toLocaleDateString("it-IT")
+
+
+};
+
+
+
+videos.push(video);
+
+
+
+saveVideos();
 
 
 document.getElementById("title").value="";
 
 document.getElementById("author").value="";
 
-document.getElementById("videoURL").value="";
+document.getElementById("description").value="";
+
+document.getElementById("url").value="";
 
 
-render();
+renderVideos();
+
 
 
 }
@@ -392,12 +555,27 @@ render();
 
 
 
-function render(){
+function saveVideos(){
+
+localStorage.setItem(
+"wetubeVideos",
+JSON.stringify(videos)
+);
+
+}
 
 
-let home=document.getElementById("home");
 
-let search=document.getElementById("search").value.toLowerCase();
+
+function renderVideos(){
+
+
+let home =
+document.getElementById("home");
+
+
+let search =
+document.getElementById("search").value.toLowerCase();
 
 
 
@@ -405,56 +583,144 @@ home.innerHTML="";
 
 
 
-let filtered=videos.filter(v=>
+let filtered =
+videos.filter(video => {
 
 
-v.title.toLowerCase().includes(search)
+return (
+
+video.title.toLowerCase().includes(search)
+
+||
+
+video.author.toLowerCase().includes(search)
+
+||
+
+video.description.toLowerCase().includes(search)
 
 );
 
 
+});
 
-if(filtered.length===0){
 
 
-home.innerHTML="<p>Nessun video disponibile.</p>";
+if(filtered.length === 0){
+
+
+home.innerHTML =
+
+`
+
+<p style="text-align:center;color:#777">
+
+Nessun video disponibile.
+
+</p>
+
+`;
+
 
 return;
-
 
 }
 
 
 
 
-filtered.forEach(v=>{
+filtered.forEach(video => {
 
 
-let div=document.createElement("div");
+
+let card =
+document.createElement("div");
 
 
-div.className="video";
+card.className="videoCard";
 
 
-div.innerHTML=
+
+card.innerHTML =
 
 `
 
-<b>${v.title}</b>
+<div class="videoTitle">
 
-<br>
+${video.title}
 
-${v.author}
+</div>
+
+
+<div class="videoAuthor">
+
+${video.author}
+
+</div>
+
+
+<div class="videoDescription">
+
+${video.description}
+
+</div>
+
+
+<div style="color:#999;margin-top:8px;font-size:13px">
+
+${video.date}
+
+</div>
+
 
 `;
 
 
 
-div.onclick=()=>openVideo(v);
+card.onclick = function(){
+
+openVideo(video);
+
+};
 
 
 
-home.appendChild(div);
+if(role === "host"){
+
+
+
+let deleteButton =
+document.createElement("button");
+
+
+deleteButton.className="deleteBtn";
+
+
+deleteButton.innerText="Elimina";
+
+
+deleteButton.onclick=function(event){
+
+
+event.stopPropagation();
+
+
+deleteVideo(video.id);
+
+
+};
+
+
+
+card.appendChild(deleteButton);
+
+
+
+}
+
+
+
+home.appendChild(card);
 
 
 
@@ -467,26 +733,78 @@ home.appendChild(div);
 
 
 
-function openVideo(v){
 
+function deleteVideo(id){
+
+
+if(role !== "host") return;
+
+
+
+let confirmDelete =
+confirm("Eliminare questo episodio?");
+
+
+if(!confirmDelete) return;
+
+
+
+videos =
+videos.filter(video => video.id !== id);
+
+
+
+saveVideos();
+
+
+renderVideos();
+
+
+
+}
+
+
+
+
+function openVideo(video){
 
 
 document.getElementById("player").style.display="flex";
 
 
-document.getElementById("frame").src=v.url;
+
+document.getElementById("frame").src =
+video.url;
 
 
 
-document.getElementById("info").innerHTML=
+document.getElementById("playerInfo").innerHTML =
+
 
 `
 
-<h3>${v.title}</h3>
+<h2>${video.title}</h2>
 
-<p>${v.author}</p>
 
-<p>Visualizzato da ${user}</p>
+<p>
+
+Creato da: ${video.author}
+
+</p>
+
+
+<p>
+
+${video.description}
+
+</p>
+
+
+<p style="color:#777">
+
+Visualizzato da ${user}
+
+</p>
 
 `;
 
@@ -511,7 +829,6 @@ document.getElementById("frame").src="";
 
 
 </script>
-
 
 
 </body>
