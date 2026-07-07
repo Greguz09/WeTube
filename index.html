@@ -26,7 +26,9 @@ color:#111;
 }
 
 
+
 /* LOGIN */
+
 
 #login{
 
@@ -66,6 +68,17 @@ border:1px solid #ddd;
 border-radius:8px;
 
 font-size:15px;
+
+outline:none;
+
+}
+
+
+
+input:focus,
+textarea:focus{
+
+border-color:#111;
 
 }
 
@@ -118,6 +131,8 @@ opacity:.8;
 display:none;
 
 }
+
+
 
 
 
@@ -175,14 +190,14 @@ margin:0;
 
 
 
-/* HOST */
+/* HOST PANEL */
 
 
 #hostPanel{
 
 display:none;
 
-max-width:520px;
+max-width:600px;
 
 margin:30px auto;
 
@@ -201,6 +216,53 @@ border-radius:12px;
 margin-top:0;
 
 }
+
+
+
+.stats{
+
+display:flex;
+
+gap:15px;
+
+margin-top:25px;
+
+margin-bottom:20px;
+
+}
+
+
+
+.statBox{
+
+flex:1;
+
+padding:15px;
+
+border:1px solid #eee;
+
+border-radius:10px;
+
+text-align:center;
+
+font-size:14px;
+
+}
+
+
+
+.statNumber{
+
+font-size:22px;
+
+font-weight:600;
+
+margin-top:8px;
+
+}
+
+
+
 
 
 
@@ -227,6 +289,8 @@ padding:22px 10px;
 border-bottom:1px solid #eee;
 
 cursor:pointer;
+
+transition:.2s;
 
 }
 
@@ -299,6 +363,8 @@ border:1px solid #ddd;
 
 
 
+
+
 /* PLAYER */
 
 
@@ -360,6 +426,8 @@ width:100px;
 
 
 
+
+
 /* LIKE */
 
 
@@ -385,6 +453,8 @@ background:#f5f5f5;
 
 
 
+
+
 /* COMMENTI */
 
 
@@ -402,7 +472,7 @@ padding-top:20px;
 
 .comment{
 
-padding:12px 0;
+padding:15px 0;
 
 border-bottom:1px solid #eee;
 
@@ -428,6 +498,35 @@ color:#444;
 
 
 
+.commentDelete{
+
+margin-top:10px;
+
+background:white;
+
+color:#111;
+
+border:1px solid #ddd;
+
+padding:8px 14px;
+
+font-size:13px;
+
+}
+
+
+
+.commentDelete:hover{
+
+background:#f5f5f5;
+
+}
+
+
+
+
+
+
 </style>
 
 
@@ -436,6 +535,7 @@ color:#444;
 
 
 <body>
+
 
 
 
@@ -478,6 +578,10 @@ Entra
 
 
 
+
+
+
+
 <div id="app" class="hidden">
 
 
@@ -514,6 +618,9 @@ oninput="renderVideos()">
 
 
 
+
+
+
 <div id="hostPanel">
 
 
@@ -522,6 +629,61 @@ oninput="renderVideos()">
 Dashboard Host
 
 </h2>
+
+
+
+<div class="stats">
+
+
+<div class="statBox">
+
+Video
+
+<div class="statNumber" id="videoCount">
+
+0
+
+</div>
+
+</div>
+
+
+
+
+<div class="statBox">
+
+Like
+
+<div class="statNumber" id="likeCount">
+
+0
+
+</div>
+
+</div>
+
+
+
+
+<div class="statBox">
+
+Commenti
+
+<div class="statNumber" id="commentCount">
+
+0
+
+</div>
+
+</div>
+
+
+
+</div>
+
+
+
+
 
 
 
@@ -566,6 +728,9 @@ Pubblica video
 
 
 
+
+
+
 <div id="home">
 
 </div>
@@ -575,6 +740,8 @@ Pubblica video
 
 
 </div>
+
+
 
 
 
@@ -594,7 +761,9 @@ Chiudi
 
 
 
+
 <iframe id="frame"></iframe>
+
 
 
 
@@ -602,6 +771,7 @@ Chiudi
 <div id="playerContent">
 
 </div>
+
 
 
 
@@ -635,6 +805,7 @@ JSON.stringify(videos)
 
 
 
+
 function login(){
 
 
@@ -649,9 +820,7 @@ document.getElementById("password").value;
 
 if(name==="" || password===""){
 
-
 alert("Inserisci nome e password");
-
 
 return;
 
@@ -700,9 +869,12 @@ document.getElementById("app").classList.remove("hidden");
 
 renderVideos();
 
+updateStats();
+
 
 
 }
+
 
 
 
@@ -724,19 +896,17 @@ return;
 
 
 
+
 let title =
 document.getElementById("title").value;
-
 
 
 let author =
 document.getElementById("author").value;
 
 
-
 let description =
 document.getElementById("description").value;
-
 
 
 let url =
@@ -759,9 +929,7 @@ return;
 
 
 
-
 let video={
-
 
 
 id:Date.now(),
@@ -788,8 +956,8 @@ comments:[],
 date:new Date().toLocaleDateString("it-IT")
 
 
-
 };
+
 
 
 
@@ -813,6 +981,8 @@ document.getElementById("url").value="";
 
 
 renderVideos();
+
+updateStats();
 
 
 
@@ -845,6 +1015,7 @@ home.innerHTML="";
 
 
 
+
 let filtered =
 videos.filter(video=>{
 
@@ -865,6 +1036,7 @@ video.description.toLowerCase().includes(search)
 
 
 });
+
 
 
 
@@ -892,7 +1064,10 @@ return;
 
 
 
+
+
 filtered.forEach(video=>{
+
 
 
 let card =
@@ -939,11 +1114,13 @@ ${video.date}
 
 
 
+
 card.onclick=function(){
 
 openVideo(video);
 
 };
+
 
 
 
@@ -977,7 +1154,6 @@ deleteVideo(video.id);
 
 
 };
-
 
 
 
@@ -1036,7 +1212,6 @@ return;
 
 
 
-
 videos =
 videos.filter(video=>video.id!==id);
 
@@ -1045,8 +1220,10 @@ videos.filter(video=>video.id!==id);
 saveVideos();
 
 
-
 renderVideos();
+
+
+updateStats();
 
 
 
@@ -1106,6 +1283,7 @@ currentVideo.likedBy.includes(user);
 
 
 
+
 box.innerHTML=`
 
 <h2>
@@ -1146,7 +1324,7 @@ ${liked ? "♥ Ti piace" : "♡ Mi piace"}
 
 <p>
 
-${currentVideo.likedBy.length} Mi piace
+❤️ ${currentVideo.likedBy.length} Mi piace
 
 </p>
 
@@ -1161,14 +1339,18 @@ ${currentVideo.likedBy.length} Mi piace
 
 <h3>
 
-Commenti
+Commenti (${currentVideo.comments.length})
 
 </h3>
 
 
 
+
+
 <input
+
 id="commentInput"
+
 placeholder="Scrivi un commento">
 
 
@@ -1182,9 +1364,11 @@ Invia
 
 
 
+
 <div id="comments">
 
 </div>
+
 
 
 
@@ -1193,6 +1377,7 @@ Invia
 
 
 `;
+
 
 
 
@@ -1220,24 +1405,22 @@ currentVideo.likedBy.indexOf(user);
 
 
 
+
 if(index===-1){
 
 
-
 currentVideo.likedBy.push(user);
-
 
 
 }
 else{
 
 
-
 currentVideo.likedBy.splice(index,1);
 
 
-
 }
+
 
 
 
@@ -1247,6 +1430,10 @@ saveVideos();
 
 
 renderPlayer();
+
+
+
+updateStats();
 
 
 
@@ -1271,7 +1458,6 @@ document.getElementById("commentInput").value;
 
 if(text===""){
 
-
 return;
 
 }
@@ -1282,12 +1468,10 @@ return;
 currentVideo.comments.push({
 
 
-
 user:user,
 
 
 text:text
-
 
 
 });
@@ -1295,11 +1479,14 @@ text:text
 
 
 
+
 saveVideos();
 
 
-
 renderPlayer();
+
+
+updateStats();
 
 
 
@@ -1331,13 +1518,15 @@ return;
 
 
 
-
 area.innerHTML="";
 
 
 
 
-currentVideo.comments.forEach(comment=>{
+
+
+
+currentVideo.comments.forEach((comment,index)=>{
 
 
 
@@ -1359,6 +1548,7 @@ ${comment.user}
 </div>
 
 
+
 <div class="commentText">
 
 ${comment.text}
@@ -1366,6 +1556,44 @@ ${comment.text}
 </div>
 
 `;
+
+
+
+
+
+
+if(comment.user===user || role==="host"){
+
+
+
+let btn =
+document.createElement("button");
+
+
+btn.className="commentDelete";
+
+
+btn.innerHTML="Elimina";
+
+
+
+btn.onclick=function(){
+
+
+deleteComment(index);
+
+
+};
+
+
+
+div.appendChild(btn);
+
+
+
+}
+
+
 
 
 
@@ -1387,6 +1615,117 @@ area.appendChild(div);
 
 
 
+function deleteComment(index){
+
+
+
+let answer =
+confirm("Eliminare questo commento?");
+
+
+
+if(!answer){
+
+return;
+
+}
+
+
+
+
+currentVideo.comments.splice(index,1);
+
+
+
+saveVideos();
+
+
+renderPlayer();
+
+
+updateStats();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function updateStats(){
+
+
+
+let videoBox =
+document.getElementById("videoCount");
+
+
+let likeBox =
+document.getElementById("likeCount");
+
+
+let commentBox =
+document.getElementById("commentCount");
+
+
+
+
+if(!videoBox){
+
+return;
+
+}
+
+
+
+
+
+let totalLikes=0;
+
+let totalComments=0;
+
+
+
+videos.forEach(video=>{
+
+
+totalLikes += video.likedBy.length;
+
+
+totalComments += video.comments.length;
+
+
+});
+
+
+
+
+
+videoBox.innerHTML=videos.length;
+
+
+likeBox.innerHTML=totalLikes;
+
+
+commentBox.innerHTML=totalComments;
+
+
+
+}
+
+
+
+
+
+
+
+
+
 function closePlayer(){
 
 
@@ -1394,9 +1733,7 @@ function closePlayer(){
 document.getElementById("player").style.display="none";
 
 
-
 document.getElementById("frame").src="";
-
 
 
 currentVideo=null;
@@ -1408,7 +1745,6 @@ currentVideo=null;
 
 
 </script>
-
 
 
 </body>
