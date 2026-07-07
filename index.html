@@ -845,13 +845,24 @@ document.getElementById("status").innerHTML="Modalità Host";
 
 
 }
-else{
+else if(password==="230709"){
 
 
 role="user";
 
 
 document.getElementById("status").innerHTML="Modalità Utente";
+
+
+}
+
+else{
+
+
+alert("Password errata");
+
+
+return;
 
 
 }
@@ -1470,6 +1481,7 @@ currentVideo.comments.push({
 
 user:user,
 
+role:role,
 
 text:text
 
@@ -1562,7 +1574,7 @@ ${comment.text}
 
 
 
-if(comment.user===user || role==="host"){
+if(role==="host" || (comment.user===user && comment.role===role)){
 
 
 
